@@ -7,7 +7,7 @@ export default class App extends React.Component {
     text: '',
     radio: 0,
     capitalize: false,
-    multiline: false
+    multiline: true
   }
   onChangeText(text) {
     let newText = text;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import { Button, StyleSheet, TextInput, View } from 'react-native';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 
 
@@ -12,9 +12,10 @@ export default class App extends React.Component {
   onChangeText(text) {
     let newText = text;
     let wasTextAdded = text.length > this.state.text.length;
-    let cursorAtEnd = this.state.selection && this.state.selection.end === text.length;
+    let cursorAtEnd = this.state.selection && (this.state.selection.end >= (text.length - 1))
 
     if (wasTextAdded && cursorAtEnd) {
+
       if (this.state.radio === 5) { // Change last char
         newText = text.substr(0, text.length - 1) + text[text.length - 1].toUpperCase();
       }
@@ -29,7 +30,9 @@ export default class App extends React.Component {
 
       if (this.state.radio === 2) { // Toggle case
         let lastChar = text[text.length - 1];
-        if (lastChar === ' ') this.setState({capitalize: !this.state.capitalize});
+        if (lastChar === ' ') {
+          this.setState({capitalize: !this.state.capitalize});
+        }
       } else if (this.state.capitalize) {
         this.setState({capitalize: false});
       }
@@ -48,14 +51,17 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+
         <TextInput
           multiline={true}
-          style={{width: '100%', height: '90%'}}
-          value={this.state.text?this.state.text:''}
+          style={{width: '100%', height: '90%', textAlignVertical: 'top'}}
+          ref={(input) => this.input = input}
+          value={this.state.text ? this.state.text : ''}
           onChangeText={(text) => this.onChangeText(text)}
           onSelectionChange={(event) => this.onSelectionChange(event.nativeEvent.selection)}
           autoCapitalize={this.state.capitalize ? 'words' : 'sentences'}
           placeholder="Type here"/>
+
         <View style={{position: 'absolute', bottom: 0, width: '100%', margin: 5}}>
           <RadioForm
             radio_props={radioProps}
@@ -65,7 +71,12 @@ export default class App extends React.Component {
               this.setState({radio: value}); 
             }}
           />
+          <Button
+            onPress={() => this.input && this.input.clear()}
+            title='Clear'
+          />
         </View>
+
       </View>
     );
   }

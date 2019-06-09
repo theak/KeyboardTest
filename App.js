@@ -2,12 +2,12 @@ import React from 'react';
 import { Button, StyleSheet, TextInput, View } from 'react-native';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 
-
 export default class App extends React.Component {
   state = {
     text: '',
     radio: 0,
-    capitalize: false
+    capitalize: false,
+    multiline: false
   }
   onChangeText(text) {
     let newText = text;
@@ -53,7 +53,7 @@ export default class App extends React.Component {
       <View style={styles.container}>
 
         <TextInput
-          multiline={true}
+          multiline={this.state.multiline}
           style={{width: '100%', height: '90%', textAlignVertical: 'top'}}
           ref={(input) => this.input = input}
           value={this.state.text ? this.state.text : ''}
